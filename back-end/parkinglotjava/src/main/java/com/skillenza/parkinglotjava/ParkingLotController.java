@@ -1,15 +1,18 @@
 package com.skillenza.parkinglotjava;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import javax.websocket.server.PathParam;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.websocket.server.PathParam;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
@@ -60,6 +63,17 @@ public class ParkingLotController {
 	    	}
 	    	return exist;
 	    }
-	    	    
+	    
+	    @PutMapping("/parkings/{id}")
+	    void updateParking(@PathParam(value="id") long id, @RequestBody ParkingLot parkingLot) throws Exception {
+	    	if(parkingLot != null) {
+	    		Optional<ParkingLot> lot = parkingLotRepository.findById(id);
+	    		if(lot.isPresent()) {
+	    			parkingLot.setCreatedAt(lot.get().getCreatedAt());
+	    			parkingLot.setUpdatedAt(new Date());
+	    			parkingLotRepository.saveAndFlush(parkingLot);
+	    		}
+	    	}
+	    }
 }
 

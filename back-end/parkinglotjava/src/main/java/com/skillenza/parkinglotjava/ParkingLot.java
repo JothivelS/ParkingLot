@@ -13,7 +13,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@Table(name = "parkinglots")
+@Table(name = "parkinglots", uniqueConstraints=
+@UniqueConstraint(columnNames = {"lot", "vehicleNumber"}))
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
         allowGetters = true)
